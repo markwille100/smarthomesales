@@ -1089,32 +1089,11 @@ footer {
       The investor-grade real estate platform built for everyone. Free, simple, and entirely on your side.
     </p>
 
-    <form class="hero-form" onsubmit="submitToBeehiiv(event)">
-      <input type="email" class="f-email" id="hIn" placeholder="Enter your email address" required>
-      <button type="submit" class="btn-forest" id="hBtn">Get Early Access</button>
-    </form>
-    <script>
-    async function submitToBeehiiv(e) {
-      e.preventDefault();
-      const email = document.getElementById('hIn').value;
-      const btn = document.getElementById('hBtn');
-      btn.textContent = 'Joining...';
-      btn.disabled = true;
-      try {
-        await fetch('https://app.beehiiv.com/subscribe/18ce624c-76d9-46ec-91f7-0e75e7311b7e', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          mode: 'no-cors',
-          body: JSON.stringify({ email })
-        });
-        btn.textContent = '✓ You\'re on the list!';
-        document.getElementById('hIn').value = '';
-      } catch(err) {
-        btn.textContent = 'Get Early Access';
-        btn.disabled = false;
-      }
-    }
-    </script>
+    <style>
+    .beehiiv-embed { opacity: 0; animation: slideUp 0.7s 0.34s ease forwards; }
+    </style>
+    <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
+    <iframe src="https://subscribe-forms.beehiiv.com/18ce624c-76d9-46ec-91f7-0e75e7311b7e" class="beehiiv-embed" data-test-id="beehiiv-embed" frameborder="0" scrolling="no" style="width: 100%; height: 52px; margin: 0 0 16px 0; border-radius: 0 !important; background-color: transparent; box-shadow: none; max-width: 440px; border: none; display: block; overflow: hidden;"></iframe>
 
     <p class="hero-note">Free forever &nbsp;·&nbsp; No credit card &nbsp;·&nbsp; No spam</p>
   </div>
