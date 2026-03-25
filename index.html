@@ -1064,6 +1064,7 @@ footer {
 }
 
 </style>
+<script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
 </head>
 <body>
 
@@ -1089,54 +1090,44 @@ footer {
       The investor-grade real estate platform built for everyone. Free, simple, and entirely on your side.
     </p>
 
-   <iframe name="beehiiv-hidden" style="display:none;" aria-hidden="true"></iframe>
+   <iframe src="https://subscribe-forms.beehiiv.com/18ce624c-76d9-46ec-91f7-0e75e7311b7e" class="beehiiv-embed" data-test-id="beehiiv-embed" frameborder="0" scrolling="no" style="display:none;"></iframe>
     <form class="hero-form" onsubmit="goToBeehiiv(event)">
       <input type="email" class="f-email" id="hIn" placeholder="Enter your email address" required>
       <button type="submit" class="btn-forest" id="hBtn">Get Early Access</button>
     </form>
   <script>
 
-    function goToBeehiiv(e) {
+   function goToBeehiiv(e) {
   e.preventDefault();
   const email = document.getElementById('hIn').value;
-  const btn = document.getElementById('hBtn');
-  const inp = document.getElementById('hIn');
+  submitToBeehiiv(email, 'hIn', 'hBtn');
+}
 
-  const dummy = document.createElement('form');
-  dummy.method = 'POST';
-  dummy.action = 'https://embeds.beehiiv.com/forms/18ce624c-76d9-46ec-91f7-0e75e7311b7e/subscriptions';
-  dummy.target = 'beehiiv-hidden';
-  dummy.style.display = 'none';
+function submitToBeehiiv(email, inId, btnId) {
+  const btn = document.getElementById(btnId);
+  const inp = document.getElementById(inId);
 
-  const fields = {
-    email: email,
-    publication_id: 'pub_3112ce40-2f03-4c0d-98d0-c9209dda5dfd',
-    double_opt_override: 'off',
-    reactivate_existing: 'false'
-  };
-  Object.entries(fields).forEach(([name, value]) => {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = name;
-    input.value = value;
-    dummy.appendChild(input);
+  fetch('https://subscribe-forms.beehiiv.com/api/v1/subscriptions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: email,
+      publication_id: 'pub_3112ce40-2f03-4c0d-98d0-c9209dda5dfd',
+      form_id: '18ce624c-76d9-46ec-91f7-0e75e7311b7e'
+    })
+  }).finally(() => {
+    btn.textContent = '✓ You\'re on the list';
+    btn.disabled = true;
+    btn.style.opacity = '0.75';
+    inp.value = '';
+    inp.placeholder = 'Thanks, we\'ll be in touch.';
+    setTimeout(() => {
+      btn.textContent = 'Get Early Access';
+      btn.disabled = false;
+      btn.style.opacity = '';
+      inp.placeholder = 'Enter your email address';
+    }, 5000);
   });
-
-  document.body.appendChild(dummy);
-  dummy.submit();
-  document.body.removeChild(dummy);
-
-  btn.textContent = '✓ You\'re on the list';
-  btn.disabled = true;
-  btn.style.opacity = '0.75';
-  inp.value = '';
-  inp.placeholder = 'Thanks, we\'ll be in touch.';
-  setTimeout(() => {
-    btn.textContent = 'Get Early Access';
-    btn.disabled = false;
-    btn.style.opacity = '';
-    inp.placeholder = 'Enter your email address';
-  }, 5000);
 }
     </script>
 
@@ -1367,45 +1358,8 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 // Form submit
 function submitEmail(e, inId, btnId) {
   e.preventDefault();
-  const btn = document.getElementById(btnId);
-  const inp = document.getElementById(inId);
-  const email = inp.value;
-
-  const dummy = document.createElement('form');
-  dummy.method = 'POST';
-  dummy.action = 'https://embeds.beehiiv.com/forms/18ce624c-76d9-46ec-91f7-0e75e7311b7e/subscriptions';
-  dummy.target = 'beehiiv-hidden';
-  dummy.style.display = 'none';
-
-  const fields = {
-    email: email,
-    publication_id: 'pub_3112ce40-2f03-4c0d-98d0-c9209dda5dfd',
-    double_opt_override: 'off',
-    reactivate_existing: 'false'
-  };
-  Object.entries(fields).forEach(([name, value]) => {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = name;
-    input.value = value;
-    dummy.appendChild(input);
-  });
-
-  document.body.appendChild(dummy);
-  dummy.submit();
-  document.body.removeChild(dummy);
-
-  btn.textContent = '✓ You\'re on the list';
-  btn.disabled = true;
-  btn.style.opacity = '0.75';
-  inp.value = '';
-  inp.placeholder = 'Thanks, we\'ll be in touch.';
-  setTimeout(() => {
-    btn.textContent = 'Get Early Access';
-    btn.disabled = false;
-    btn.style.opacity = '';
-    inp.placeholder = 'Enter your email address';
-  }, 5000);
+  const email = document.getElementById(inId).value;
+  submitToBeehiiv(email, inId, btnId);
 }
 
 // Smooth scroll anchors
