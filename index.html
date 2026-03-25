@@ -1089,16 +1089,55 @@ footer {
       The investor-grade real estate platform built for everyone. Free, simple, and entirely on your side.
     </p>
 
+   <iframe name="beehiiv-hidden" style="display:none;" aria-hidden="true"></iframe>
     <form class="hero-form" onsubmit="goToBeehiiv(event)">
       <input type="email" class="f-email" id="hIn" placeholder="Enter your email address" required>
       <button type="submit" class="btn-forest" id="hBtn">Get Early Access</button>
     </form>
-    <script>
+  <script>
+
     function goToBeehiiv(e) {
-      e.preventDefault();
-      const email = encodeURIComponent(document.getElementById('hIn').value);
-      window.open('https://subscribe-forms.beehiiv.com/18ce624c-76d9-46ec-91f7-0e75e7311b7e?email=' + email, '_blank');
-    }
+  e.preventDefault();
+  const email = document.getElementById('hIn').value;
+  const btn = document.getElementById('hBtn');
+  const inp = document.getElementById('hIn');
+
+  const dummy = document.createElement('form');
+  dummy.method = 'POST';
+  dummy.action = 'https://app.beehiiv.com/forms/18ce624c-76d9-46ec-91f7-0e75e7311b7e/subscriptions';
+  dummy.target = 'beehiiv-hidden';
+  dummy.style.display = 'none';
+
+  const fields = {
+    email: email,
+    publication_id: 'pub_3112ce40-2f03-4c0d-98d0-c9209dda5dfd',
+    double_opt_override: 'off',
+    reactivate_existing: 'false'
+  };
+  Object.entries(fields).forEach(([name, value]) => {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value;
+    dummy.appendChild(input);
+  });
+
+  document.body.appendChild(dummy);
+  dummy.submit();
+  document.body.removeChild(dummy);
+
+  btn.textContent = '✓ You\'re on the list';
+  btn.disabled = true;
+  btn.style.opacity = '0.75';
+  inp.value = '';
+  inp.placeholder = 'Thanks, we\'ll be in touch.';
+  setTimeout(() => {
+    btn.textContent = 'Get Early Access';
+    btn.disabled = false;
+    btn.style.opacity = '';
+    inp.placeholder = 'Enter your email address';
+  }, 5000);
+}
     </script>
 
     <p class="hero-note">Free forever &nbsp;·&nbsp; No credit card &nbsp;·&nbsp; No spam</p>
@@ -1289,6 +1328,7 @@ footer {
       <div class="cta-box">
         <p class="cta-box-title">Join the waitlist</p>
         <p class="cta-box-sub">Be among the first to access Smart Home Sales.</p>
+       <iframe name="beehiiv-hidden" style="display:none;" aria-hidden="true"></iframe>
         <form class="cta-form" onsubmit="submitEmail(event,'cIn','cBtn')">
           <input type="email" class="cta-email" id="cIn" placeholder="Enter your email address" required>
           <button type="submit" class="btn-white" id="cBtn">Get Early Access</button>
@@ -1329,6 +1369,32 @@ function submitEmail(e, inId, btnId) {
   e.preventDefault();
   const btn = document.getElementById(btnId);
   const inp = document.getElementById(inId);
+  const email = inp.value;
+
+  const dummy = document.createElement('form');
+  dummy.method = 'POST';
+  dummy.action = 'https://app.beehiiv.com/forms/18ce624c-76d9-46ec-91f7-0e75e7311b7e/subscriptions';
+  dummy.target = 'beehiiv-hidden';
+  dummy.style.display = 'none';
+
+  const fields = {
+    email: email,
+    publication_id: 'pub_3112ce40-2f03-4c0d-98d0-c9209dda5dfd',
+    double_opt_override: 'off',
+    reactivate_existing: 'false'
+  };
+  Object.entries(fields).forEach(([name, value]) => {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value;
+    dummy.appendChild(input);
+  });
+
+  document.body.appendChild(dummy);
+  dummy.submit();
+  document.body.removeChild(dummy);
+
   btn.textContent = '✓ You\'re on the list';
   btn.disabled = true;
   btn.style.opacity = '0.75';
