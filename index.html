@@ -1323,30 +1323,42 @@ function submitToBeehiiv(email, inId, btnId) {
   const inp = document.getElementById(inId);
   btn.disabled = true;
   btn.style.opacity = '0.75';
-  fetch('https://subscribe-forms.beehiiv.com/api/v1/subscriptions', {
+  btn.textContent = 'Submitting\u2026';
+  fetch('/.netlify/functions/subscribe', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      email: email,
-      publication_id: 'pub_3112ce40-2f03-4c0d-98d0-c9209dda5dfd',
-      form_id: '18ce624c-76d9-46ec-91f7-0e75e7311b7e'
+    body: JSON.stringify({ email: email })
+  })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data.success) {
+        btn.textContent = '\u2713 You\'re on the list';
+      } else {
+        btn.textContent = 'Try again';
+        btn.disabled = false;
+        btn.style.opacity = '';
+      }
     })
-  }).finally(() => {
-    btn.textContent = '\u2713 You\'re on the list';
-    inp.value = '';
-    inp.placeholder = 'Thanks, we\'ll be in touch.';
-    setTimeout(() => {
-      btn.textContent = 'Get Early Access';
+    .catch(function() {
+      btn.textContent = 'Try again';
       btn.disabled = false;
       btn.style.opacity = '';
-      inp.placeholder = 'Enter your email address';
-    }, 5000);
-  });
+    })
+    .finally(function() {
+      inp.value = '';
+      inp.placeholder = 'Thanks, we\'ll be in touch.';
+      setTimeout(function() {
+        btn.textContent = 'Get Early Access';
+        btn.disabled = false;
+        btn.style.opacity = '';
+        inp.placeholder = 'Enter your email address';
+      }, 5000);
+    });
 }
 
 function submitEmail(e, inId, btnId) {
   e.preventDefault();
-  const email = document.getElementById(inId).value;
+  var email = document.getElementById(inId).value;
   submitToBeehiiv(email, inId, btnId);
 }
 
