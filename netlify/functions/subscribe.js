@@ -17,7 +17,7 @@ exports.handler = async (event) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer D39jZgQhA1Bj6MknFiizsvPzT2mYVowytzIenaBtgvYA1VOXMtyslCXQE7z9C2Hl
+          'Authorization': 'Bearer D39jZgQhA1Bj6MknFiizsvPzT2mYVowytzIenaBtgvYA1VOXMtyslCXQE7z9C2Hl'
         },
         body: JSON.stringify({
           email,
@@ -30,4 +30,13 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers,
-      body
+      body: JSON.stringify({ success: true, data })
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ success: false, error: err.message })
+    };
+  }
+};
