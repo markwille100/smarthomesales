@@ -17,7 +17,7 @@ exports.handler = async (event) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer XtpKu8S7gYuyqaFhG2bhBV6SeMoyAciVYyLMAyuvSXG1aHPZoYPxml6Wd5pY83DW'
+          'Authorization': 'Bearer D39jZgQhA1Bj6MknFiizsvPzT2mYVowytzIenaBtgvYA1VOXMtyslCXQE7z9C2Hl
         },
         body: JSON.stringify({
           email,
