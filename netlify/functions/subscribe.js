@@ -1,3 +1,5 @@
+const https = require('https');
+
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -11,26 +13,40 @@ exports.handler = async (event) => {
 
   try {
     const { email } = JSON.parse(event.body);
-    const response = await fetch(
-      'https://api.beehiiv.com/v2/publications/pub_3112ce40-2f03-4c0d-98d0-c9209dda5dfd/subscriptions',
-      {
+    
+    const result = await new Promise((resolve, reject) => {
+      const postData = JSON.stringify({
+        email,
+        reactivate_existing: false,
+        send_welcome_email: false
+      });
+
+      const options = {
+        hostname: 'api.beehiiv.com',
+        path: '/v2/publications/pub_3112ce40-2f03-4c0d-98d0-c9209dda5dfd/subscriptions',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer D39jZgQhA1Bj6MknFiizsvPzT2mYVowytzIenaBtgvYA1VOXMtyslCXQE7z9C2Hl'
-        },
-        body: JSON.stringify({
-          email,
-          reactivate_existing: false,
-          send_welcome_email: false
-        })
-      }
-    );
-    const data = await response.json();
+          'Authorization': 'Bearer D39jZgQhA1Bj6MknFiizsvPzT2mYVowytzIenaBtgvYA1VOXMtyslCXQE7z9C2Hl',
+          'Content-Length': Buffer.byteLength(postData)
+        }
+      };
+
+      const req = https.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => { data += chunk; });
+        res.on('end', () => { resolve({ status: res.statusCode, body: data }); });
+      });
+
+      req.on('error', reject);
+      req.write(postData);
+      req.end();
+    });
+
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ success: true, data })
+      body: JSON.stringify({ success: true, status: result.status })
     };
   } catch (err) {
     return {
