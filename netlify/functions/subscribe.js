@@ -27,7 +27,7 @@ exports.handler = async (event) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer D39jZgQhA1Bj6MknFiizsvPzT2mYVowytzIenaBtgvYA1VOXMtyslCXQE7z9C2Hl',
+          'Authorization': `Bearer ${process.env.BEEHIIV_API_KEY}`,
           'Content-Length': Buffer.byteLength(postData)
         }
       };
